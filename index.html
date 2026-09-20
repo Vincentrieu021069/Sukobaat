@@ -123,7 +123,7 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
 <button class="genese-home" data-generic-home>← Retour au menu principal</button></div></main>
 
  <main id="mode" class="view">
-  <a class="back" href="#home">← SUKOBAAT</a>
+  <a class="back mode-home" href="#home">← Retour au menu</a>
   <h2>Mode d'emploi</h2>
   <div class="demo-tabs"><button class="on" data-option="1">Sans USB-C</button><button data-option="2">Avec USB-C</button></div>
   <div class="stage"><div id="stepScene" class="step-scene"><div id="stepDring">DRIIIIING !</div><button id="imgPrev" class="step-nav prev" aria-label="Étape précédente">‹</button><button id="imgNext" class="step-nav next" aria-label="Étape suivante">›</button><img id="stepImg" alt="Étape du mode d'emploi"><div class="step-badge" id="stepBadge">1 / 4</div></div>
@@ -338,4 +338,23 @@ syncPhotoDemo();
   display:flex!important;z-index:1000!important;
 }
 #home:target{display:block!important}
+</style>
+
+<style>
+#mode .mode-home{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  width:auto!important;
+  margin:2px 0 18px!important;
+  padding:9px 15px!important;
+  border:1px solid var(--line)!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.45)!important;
+  color:var(--ink)!important;
+  text-decoration:none!important;
+  font:600 13px Arial,sans-serif!important;
+  letter-spacing:.01em!important;
+}
+#mode .mode-home:active{background:var(--ink)!important;color:var(--paper)!important}
 </style>
