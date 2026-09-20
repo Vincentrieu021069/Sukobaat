@@ -181,7 +181,7 @@ function formatBirthInput(el){
   if(digits.length>4) out+='/'+digits.slice(4,8);
   el.value=out;
 }
-$('#birth').addEventListener('input',()=>formatBirthInput($('#birth')));
+$('#birth').addEventListener('blur',()=>formatBirthInput($('#birth')));
 $('#entryDate').addEventListener('input',()=>formatBirthInput($('#entryDate')));
 $('#gateForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#birth').value.trim(),m=$('#gateMsg');if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)){m.textContent='Entre la date au format JJ/MM/AAAA.';return}genesisMode=(d==='18/06/1973')?'personal':'generic';
 if(genesisMode==='generic'){
@@ -357,4 +357,9 @@ syncPhotoDemo();
   letter-spacing:.01em!important;
 }
 #mode .mode-home:active{background:var(--ink)!important;color:var(--paper)!important}
+</style>
+
+<style>
+#gate:target{display:none!important}
+#gate.open{display:flex!important}
 </style>
