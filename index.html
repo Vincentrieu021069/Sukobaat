@@ -170,9 +170,9 @@ const defaults={'18/06/1973':'ACCES','01/04/1958':"Si tu lis ces lignes, c’est
 let special={...defaults};
 try{special={...special,...JSON.parse(localStorage.getItem('sukobaatDates')||'{}')}}catch(e){}
 function show(id){$$('.view').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0)}function applyGenesisMode(){const g=$('#genericGenese');[...$('#genese').children].forEach(el=>{if(el===g||el.classList.contains('back'))return;el.style.display=genesisMode==='personal'?'':'none'});g.style.display=genesisMode==='generic'?'block':'none'}
-function open(id){$('#'+id).classList.add('open')} function closeAll(){$('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
+function open(id){$('#'+id).classList.add('open')} function closeAll(){$$('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
-$('.close').forEach(b=>b.addEventListener('click',closeAll));
+$$('.close').forEach(b=>b.addEventListener('click',closeAll));
 $('#geneseLink').addEventListener('click',()=>{pending='genese';closeAll();open('gate');setTimeout(()=>$('#birth').focus(),50)});
 $('#modeLink').addEventListener('click',()=>{closeAll();show('mode')});
 function formatBirthInput(el){
