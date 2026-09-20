@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>SUKOBAAT</title>
+<style>
+:root{--paper:#f6f0e7;--ink:#191817;--muted:#756f68;--pink:#e8a6ad;--pink2:#f4c9cd;--black:#171717;--line:#d8cec2}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:100vh;padding:22px 18px 50px}
+.top{display:flex;justify-content:flex-end}.gear{border:0;background:transparent;font-size:22px;padding:10px;cursor:pointer}
+.hero{text-align:center;padding:38px 0 28px}.hero h1{font:700 clamp(42px,11vw,76px)/.95 Arial,sans-serif;letter-spacing:.08em;margin:0}
+.pron{font-style:italic;color:var(--muted);margin:10px 0 26px}.tag{font-size:19px}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px}.menu button,.primary,.secondary{border:1px solid var(--ink);border-radius:999px;padding:14px 18px;background:transparent;cursor:pointer}
+.menu button:hover,.primary{background:var(--ink);color:var(--paper)}
+.view{display:none}.view.active{display:block}.back{border:0;background:transparent;padding:10px 0;cursor:pointer;font-weight:bold}
+.story{font-size:18px;line-height:1.72;max-width:660px;margin:auto}
+.story h2{font:700 clamp(36px,9vw,58px)/1 Arial,sans-serif;letter-spacing:.03em;margin:24px 0 8px}
+.story p{margin:0 0 1.25em}
+.story strong{font-weight:700}
+.story>p:first-of-type{font-size:24px;line-height:1.45;margin:30px 0 36px}
+.story>p:nth-of-type(5),.story>p:nth-of-type(15),.story>p:nth-of-type(19),.story>p:nth-of-type(26),.story>p:nth-of-type(31),.story>p:nth-of-type(38){font-size:22px;line-height:1.5;margin:34px 0;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.final{font-size:28px!important;line-height:1.35!important;text-align:center;margin:55px 0 20px!important;padding:35px 12px!important;border-top:1px solid var(--ink)!important;border-bottom:1px solid var(--ink)!important}
+.story:before{content:"L’histoire de l’objet";display:block;text-transform:uppercase;letter-spacing:.18em;font:11px Arial,sans-serif;color:var(--muted);margin-top:26px}
+.demo-tabs{display:flex;gap:8px;margin:14px 0 20px}.demo-tabs button{flex:1;border:1px solid var(--line);background:transparent;padding:11px;border-radius:12px;cursor:pointer}.demo-tabs .on{background:var(--ink);color:white}
+.stage{position:relative;height:390px;border:1px solid #d6c9bd;border-radius:26px;background:radial-gradient(circle at 50% 28%,#fff 0,#f5eee5 60%,#e7ddd2 100%);overflow:hidden;box-shadow:inset 0 1px #fff,0 18px 40px #46372b18}
+.stage:after{content:"";position:absolute;left:7%;right:7%;bottom:31px;height:20px;background:#0002;filter:blur(12px);border-radius:50%}
+.base{position:absolute;left:7%;right:7%;bottom:53px;height:160px;background:linear-gradient(145deg,#282828,#090909 75%);border-radius:20px 20px 27px 27px;box-shadow:0 18px 25px #0005,inset 0 1px #555;z-index:2}
+.topplate{position:absolute;left:0;right:0;top:0;height:25px;background:linear-gradient(#f5cdd1,#df969f);border-radius:20px 20px 8px 8px;box-shadow:inset 0 2px #ffe9eb,0 3px 6px #0004}
+.oldphone{position:absolute;left:11%;bottom:151px;width:170px;height:101px;background:linear-gradient(145deg,#343434,#0c0c0c 72%);border-radius:32px 32px 14px 14px;box-shadow:0 12px 18px #0005,inset 0 2px #555;z-index:4}
+.oldphone:before,.oldphone:after{content:"";position:absolute;top:10px;width:24px;height:30px;background:#111;border-radius:10px;box-shadow:inset 0 2px #444}
+.oldphone:before{left:13px}.oldphone:after{right:13px}
+.dial{position:absolute;width:72px;height:72px;border:10px solid #b9b6ae;border-radius:50%;left:49px;top:22px;background:radial-gradient(circle,#151515 0 25%,#d7d2c8 26% 34%,#181818 35% 100%);box-shadow:inset 0 0 0 3px #444,0 2px 4px #000}
+.dial:after{content:"";position:absolute;inset:8px;border:5px dotted #eee;border-radius:50%;opacity:.75}
+.handset{position:absolute;left:-4px;top:-31px;width:178px;height:39px;background:linear-gradient(#f4bec4,#d98792);border-radius:22px 22px 17px 17px;transform-origin:20% 50%;transition:.6s;box-shadow:0 7px 9px #0005,inset 0 2px #ffe4e7;z-index:6}
+.handset:before,.handset:after{content:"";position:absolute;top:-5px;width:43px;height:48px;background:linear-gradient(#f5c5ca,#d9828d);border-radius:18px}
+.handset:before{left:0;transform:rotate(5deg)}.handset:after{right:0;transform:rotate(-5deg)}
+.phone{position:absolute;right:14%;bottom:79px;width:77px;height:145px;background:linear-gradient(145deg,#555,#111 25%);border:4px solid #242424;border-radius:17px;transition:.65s;box-shadow:0 10px 18px #0006;z-index:5}
+.phone:before{content:"";position:absolute;top:4px;left:27px;width:18px;height:4px;border-radius:4px;background:#050505;z-index:2}
+.phone:after{content:"";position:absolute;inset:5px;background:linear-gradient(160deg,#34383d,#111 70%);border-radius:10px;box-shadow:inset 0 0 0 1px #555}
+.cable{position:absolute;right:5%;bottom:73px;width:108px;height:72px;border-bottom:5px solid #3d3d3d;border-right:5px solid #3d3d3d;border-radius:0 0 29px 0;opacity:0;transition:.5s;z-index:3;filter:drop-shadow(0 2px 2px #0005)}
+.usb{position:absolute;right:12.5%;bottom:130px;width:22px;height:10px;background:linear-gradient(#bbb,#666);border:2px solid #333;border-radius:3px;opacity:0;transition:.5s;z-index:6}
+.ring{position:absolute;left:11%;top:38px;font:800 25px Arial,sans-serif;letter-spacing:.05em;opacity:0;transform:rotate(-8deg);z-index:8;text-shadow:0 2px white}
+.caption{text-align:center;font-size:20px;margin:18px 0 8px;min-height:50px}.controls{display:flex;justify-content:center;gap:10px}.controls button{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:11px 16px;cursor:pointer}
+.shake{animation:shake .13s linear infinite}.ringing{animation:ring .5s ease infinite}.lift{transform:translate(30px,-80px) rotate(-18deg)}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}} @keyframes ring{50%{opacity:1;transform:rotate(6deg) scale(1.08)}}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.open{display:flex}
+.card{width:min(520px,100%);max-height:90vh;overflow:auto;background:var(--paper);border-radius:24px;padding:24px}.card h2{margin-top:0}.field{display:grid;gap:6px;margin:13px 0}.field input,.field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:16px}.field textarea{min-height:95px}
+.row{display:flex;gap:8px;flex-wrap:wrap}.primary,.secondary{padding:11px 16px}.secondary{background:transparent;color:var(--ink)}.msg{color:var(--muted);min-height:24px}
+.entry{border-top:1px solid var(--line);padding:12px 0}.entry small{color:var(--muted)}
+@media(max-width:480px){.menu{grid-template-columns:1fr}.stage{height:320px}.oldphone{transform:scale(.82);transform-origin:left bottom}.phone{right:11%}}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="top"><button class="gear" id="settings" aria-label="Paramètres">⚙️</button></div>
+ <main id="home" class="view active">
+  <section class="hero">
+   <h1>SUKOBAAT</h1>
+  </section>
+  <div class="menu">
+<a class="menuLink" href="#gate">Genèse</a>
+<a class="menuLink" href="#mode">Mode d'emploi</a>
+</div>
+ </main>
+
+ <main id="genese" class="view story">
+  <a class="back" href="#home">← SUKOBAAT</a>
+  <h2>Genèse</h2><div style="width:54px;height:4px;background:var(--pink);border-radius:4px;margin:12px 0 34px"></div>
+  <p>Alors, pourquoi j'ai fabriqué cet objet pour toi ?</p>
+  <p>Au départ, franchement, rien de tout ça n'était prévu.</p>
+  <p>Juste une pub pour un gadget. Mon téléphone sait très bien que j'en suis friand, alors évidemment il m'en propose à longueur de journée.</p>
+  <p>Et là…</p><p><strong>Un combiné rose ? Comment passer à côté !</strong></p>
+  <p>Je t'ai imaginée tout de suite avec, chez toi, un jour de télétravail, au téléphone.</p>
+  <p>Ça aurait pu s'arrêter là. Acheter le gadget, te l'offrir, rigoler cinq minutes et voilà.</p>
+  <p>Sauf que… va savoir pourquoi, l'idée est restée.</p><p>Et puis une autre est venue derrière. Puis une autre.</p>
+  <p>Je me suis mis à penser à ton boulot, et surtout à ce que tu aimes dedans : les gens, les rencontres, les échanges.</p>
+  <p>Ce métier, tu en as eu le goût en regardant ton père le faire.</p>
+  <p>Et à son époque, forcément, on le faisait autrement. Pas de portable. Pourtant, le téléphone était déjà indispensable.</p>
+  <p>Il avait simplement une place : <strong>le bureau</strong>.</p>
+  <p>On appelait, on décrochait, on prenait un rendez-vous, on discutait… puis on raccrochait et on allait voir les gens.</p>
+  <p>Le téléphone faisait partie du boulot, mais il ne prenait pas toute la place.</p>
+  <p>Et quelque part, j'avais envie que tu retrouves un peu de cette façon de travailler les jours où tu es chez toi.</p>
+  <p>C'est là que mon petit combiné rose a commencé à devenir autre chose.</p>
+  <p>Je me suis dit qu'on devait pouvoir garder tout ce que ton iPhone sait faire aujourd'hui, mais retrouver cette façon-là de téléphoner.</p>
+  <p><strong>Un vrai téléphone de bureau. Mais avec ton iPhone.</strong></p>
+  <p>L'idée était là.</p>
+  <p>Avec quand même un léger problème : <strong>je n'avais absolument aucune idée de comment fabriquer cet objet.</strong></p>
+  <p>Mais les Rieu sont têtus. Et un peu <strong>cul-Rieu</strong> aussi.</p>
+  <p>Alors j'ai commencé à chercher.</p>
+  <p>À son époque, mon père aurait probablement passé des heures dans des bibliothèques, à fouiller dans des bouquins pour comprendre comment réaliser un objet pareil.</p>
+  <p>Je n'ai clairement pas sa patience.</p>
+  <p><strong>Mais on a la chance, à notre époque, de pouvoir se faire aider par l'IA.</strong></p>
+  <p>Alors j'ai posé des questions. Beaucoup de questions. J'ai essayé de comprendre, imaginé des solutions, changé d'avis, recommencé…</p>
+  <p>Et puis il n'y avait pas que la question de savoir comment le faire fonctionner.</p>
+  <p>Il fallait penser <strong>l'objet dans son ensemble</strong>.</p>
+  <p>À quoi il allait ressembler. Où poser l'iPhone pour qu'il fasse naturellement partie de l'ensemble. Comment retrouver le charme d'un vrai téléphone de bureau. Comment adapter ce fameux combiné rose par lequel toute l'histoire avait commencé.</p>
+  <p>J'ai fini par dénicher un vieux téléphone à cadran qui avait exactement ce que je cherchais : <strong>une vraie gueule de téléphone.</strong></p>
+  <p>Et après, il a fallu <strong>faire rentrer le présent dans le passé</strong>.</p>
+  <p>Adapter le combiné, cacher l'électronique, trouver comment faire cohabiter tout ça et faire disparaître autant que possible toute la technique derrière l'objet.</p>
+  <p>Bref, <strong>penser chaque détail pour qu'à la fin, on ne voie plus vraiment tout ce qu'il y a derrière.</strong></p>
+  <p>Et petit à petit, entre les idées, les recherches, les essais et quelques prises de tête, la pub pour un combiné rose est devenue <strong>l'objet que tu as maintenant devant toi.</strong></p>
+  <p>Ton iPhone y trouve naturellement sa place, avec tout ce qu'il sait faire.</p>
+  <p>Et quand tu en as envie, SUKOBAAT lui redonne simplement ce qu'il a perdu avec le temps : <strong>une place sur le bureau, une vraie sonnerie et un combiné à décrocher.</strong></p>
+  <p>Juste une autre façon de téléphoner.</p>
+  <p>Et j'espère surtout un petit plaisir en plus les jours où tu travailles de chez toi.</p>
+  <p>Je l'ai appelé <strong>SUKOBAAT</strong>.</p>
+  <p><strong>Sukoon</strong>, pour le calme, la tranquillité, le fait de pouvoir poser ton téléphone, le laisser à sa place et continuer ta journée sans avoir à le garder avec toi.</p>
+  <p><strong>Baat</strong>, pour la parole, la conversation, l'échange. Parce qu'au bout du compte, un téléphone sert quand même surtout à ça : <strong>parler à quelqu'un</strong>.</p>
+  <p>Et pourquoi je suis allé chercher ces deux mots du côté de l'Inde… ça, je pense que je n'ai pas besoin de te l'expliquer.</p>
+  <p>Je l'ai imaginé, conçu et bricolé pour toi.</p>
+  <p>Maintenant, j'espère surtout que tu vas le kiffer et t'en servir.</p>
+  <p>Et puis il fallait quand même que je laisse quelque part une petite phrase rien qu'à nous :</p>
+  <p class="final">Il y a des fils qui ne se coupent pas.</p><button class="genese-home" data-bottom-home>← Retour au menu principal</button>
+ <div id="genericGenese"><h2>Genèse</h2><p id="genericIntro"></p>
+<p>SUKOBAAT est né d’une idée simple : retrouver le plaisir d’un vrai téléphone de bureau sans renoncer à ce qu’un smartphone sait faire aujourd’hui.</p>
+<p>Le point de départ était un combiné rose au charme rétro. Puis l’idée a grandi : lui redonner une vraie place, une sonnerie et un geste familier — décrocher, parler, raccrocher.</p>
+<p>Le smartphone reste au cœur du système. Posé sur SUKOBAAT, il conserve tout ce qu’il sait faire. L’objet lui ajoute simplement une présence physique sur le bureau et une autre façon de vivre les appels.</p>
+<p>Il a fallu faire cohabiter un ancien téléphone à cadran, un combiné adapté et une électronique discrète, avec une règle : laisser la technique disparaître autant que possible derrière l’objet.</p>
+<p>Le nom SUKOBAAT vient de deux mots : Sukoon, pour le calme et la tranquillité ; Baat, pour la parole, la conversation et l’échange.</p>
+<p>SUKOBAAT, c’est donc une autre façon de téléphoner : garder le présent, retrouver un peu du geste d’avant.</p>
+<button class="genese-home" data-generic-home>← Retour au menu principal</button></div></main>
+
+ <main id="mode" class="view">
+  <a class="back" href="#home">← SUKOBAAT</a>
+  <h2>Mode d'emploi</h2>
+  <div class="demo-tabs"><button class="on" data-option="1">Sans USB-C</button><button data-option="2">Avec USB-C</button></div>
+  <div class="stage"><div id="stepScene" class="step-scene"><div id="stepDring">DRIIIIING !</div><button id="imgPrev" class="step-nav prev" aria-label="Étape précédente">‹</button><button id="imgNext" class="step-nav next" aria-label="Étape suivante">›</button><img id="stepImg" alt="Étape du mode d'emploi"><div class="step-badge" id="stepBadge">1 / 4</div></div>
+   <img id="demoPhoto" class="demo-photo" src="assets/9e9fd2057ca7.png" alt="SUKOBAAT">
+   <div id="photoRing" class="photo-ringtext">DRIIIIING !</div><div id="iphonePulse" class="demo-hotspot"></div><div id="handsetPulse" class="demo-hotspot"></div><div id="personScene" class="scene-person"><div class="scene-label" id="sceneLabel"></div></div>
+
+   <div class="ring" id="ring">DRIIIIING !</div>
+   <div class="base"><div class="topplate"></div></div>
+   <div class="oldphone" id="old"><div class="dial"></div><div class="handset" id="handset"></div></div>
+   <div class="phone" id="iphone"></div><div class="cable" id="cable"></div><div class="usb" id="usb"></div>
+  </div>
+  <div class="caption" id="caption">Pose ton iPhone sur SUKOBAAT.</div>
+  <div class="controls"><button id="restart">↺ Recommencer</button><button id="next">Étape suivante →</button></div>
+ </main>
+</div>
+
+<div class="modal" id="gate"><div class="card">
+ <h2>Pour savoir si ce message est bien pour toi…</h2>
+ <p>Quelle est ta date de naissance ?</p>
+ <form id="gateForm"><div class="field"><input id="birth" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA" autocomplete="off"></div>
+ <div class="row"><button class="primary">Entrer</button><a class="secondary close" href="#home">Annuler</a></div><p class="msg" id="gateMsg"></p></form>
+</div></div>
+
+<div class="modal" id="adminGate"><div class="card">
+ <h2>Paramètres</h2><p>Mot de passe administrateur</p>
+ <form id="adminForm"><div class="field"><input id="adminPass" inputmode="numeric" placeholder="Mot de passe"></div>
+ <div class="row"><button class="primary">Ouvrir</button><a class="secondary close" href="#home">Annuler</a></div><p class="msg" id="adminMsg"></p></form>
+</div></div>
+
+<div class="modal" id="admin"><div class="card">
+ <h2>⚙️ Dates et messages</h2>
+ <p><small>Les dates ajoutées changent uniquement l’introduction de la Genèse. Le reste du texte générique reste identique. Enregistrement local sur cet appareil/navigateur.</small></p>
+ <form id="entryForm">
+  <div class="field"><label>Date de naissance</label><input id="entryDate" placeholder="JJ/MM/AAAA" inputmode="numeric"></div>
+  <div class="field"><label>Introduction personnalisée de la Genèse</label><textarea id="entryText" placeholder="Texte d’introduction…"></textarea></div>
+  <div class="row"><button class="primary">Ajouter</button><button type="button" class="secondary close">Fermer</button></div>
+ </form><div id="entries"></div>
+</div></div>
+
+<script>
+(()=>{const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let unlocked=false,pending='home',genesisMode='personal',option=1,step=0;
+const defaults={'18/06/1973':'ACCES','01/04/1958':"Si tu lis ces lignes, c’est qu’il y a dans SUKOBAAT un petit bout d’histoire qui te concerne aussi.\n\nCe métier qu’elle aime aujourd’hui, elle en a eu envie en te regardant le faire. Les rencontres, les échanges, le goût d’aller vers les gens : bien avant SUKOBAAT, c’est toi qui lui as montré tout ça sans forcément avoir besoin de l’expliquer.\n\nÀ ton époque, le téléphone était déjà indispensable, mais il restait à sa place. On appelait depuis le bureau, on prenait rendez-vous, puis on raccrochait pour aller voir les gens. Le téléphone aidait à créer la relation ; il ne la remplaçait pas.\n\nC’est une partie de cette idée que j’ai eu envie de remettre dans cet objet pour elle : garder tout ce que son iPhone permet aujourd’hui, tout en retrouvant un téléphone posé sur le bureau, une sonnerie qu’on entend et un combiné qu’on décroche.\n\nAlors, quelque part, même si tu n’as évidemment rien demandé, tu as apporté un petit morceau de SUKOBAAT avant même que l’idée existe."}; // Dates préchargées.
+let special={...defaults};
+try{special={...special,...JSON.parse(localStorage.getItem('sukobaatDates')||'{}')}}catch(e){}
+function show(id){$$('.view').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0)}function applyGenesisMode(){const g=$('#genericGenese');[...$('#genese').children].forEach(el=>{if(el===g||el.classList.contains('back'))return;el.style.display=genesisMode==='personal'?'':'none'});g.style.display=genesisMode==='generic'?'block':'none'}
+function open(id){$('#'+id).classList.add('open')} function closeAll(){$$('.modal').forEach(x=>x.classList.remove('open'))}
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
+$$('.close').forEach(b=>b.addEventListener('click',closeAll));
+function formatBirthInput(el){
+  let digits=el.value.replace(/\D/g,'').slice(0,8);
+  let out=digits.slice(0,2);
+  if(digits.length>2) out+='/'+digits.slice(2,4);
+  if(digits.length>4) out+='/'+digits.slice(4,8);
+  el.value=out;
+}
+$('#birth').addEventListener('input',()=>formatBirthInput($('#birth')));
+$('#entryDate').addEventListener('input',()=>formatBirthInput($('#entryDate')));
+$('#gateForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#birth').value.trim(),m=$('#gateMsg');if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)){m.textContent='Entre la date au format JJ/MM/AAAA.';return}genesisMode=(d==='18/06/1973')?'personal':'generic';
+if(genesisMode==='generic'){
+ let intro;
+ if(d==='01/04/1958') intro="Si tu lis ces lignes, c’est qu’il y a dans SUKOBAAT un petit bout d’histoire qui te concerne aussi.\n\nCe métier qu’elle aime aujourd’hui, elle en a eu envie en te regardant le faire. Les rencontres, les échanges, le goût d’aller vers les gens : bien avant SUKOBAAT, c’est toi qui lui as montré tout ça sans forcément avoir besoin de l’expliquer.\n\nÀ ton époque, le téléphone était déjà indispensable, mais il restait à sa place. On appelait depuis le bureau, on prenait rendez-vous, puis on raccrochait pour aller voir les gens. Le téléphone aidait à créer la relation ; il ne la remplaçait pas.\n\nC’est une partie de cette idée que j’ai eu envie de remettre dans cet objet pour elle : garder tout ce que son iPhone permet aujourd’hui, tout en retrouvant un téléphone posé sur le bureau, une sonnerie qu’on entend et un combiné qu’on décroche.\n\nAlors, quelque part, même si tu n’as évidemment rien demandé, tu as apporté un petit morceau de SUKOBAAT avant même que l’idée existe.";
+ else if(special[d] && special[d]!=='ACCES') intro=special[d];
+ else intro='Voici comment est né SUKOBAAT : une envie de remettre un peu de geste, de présence et de plaisir dans une chose devenue presque entièrement numérique.';
+ $('#genericIntro').textContent=intro;
+}
+closeAll();m.textContent='';$('#birth').value='';applyGenesisMode();show(pending);if(pending==='genese')location.hash='genese'});
+$('#settings').addEventListener('click',()=>{closeAll();open('adminGate');$('#adminPass').focus()});
+function adminCode(){let n=new Date();return String(n.getDate()+(n.getMonth()+1)+n.getHours())}
+$('#adminForm').addEventListener('submit',e=>{e.preventDefault();if($('#adminPass').value===adminCode()){closeAll();renderEntries();open('admin')}else $('#adminMsg').textContent='Mot de passe incorrect.'});
+$('#entryForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#entryDate').value.trim(),t=$('#entryText').value.trim();if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)||!t)return;special[d]=t;localStorage.setItem('sukobaatDates',JSON.stringify(special));$('#entryDate').value='';$('#entryText').value='';renderEntries()});
+function renderEntries(){let box=$('#entries');box.innerHTML='';Object.entries(special).forEach(([d,t])=>{let x=document.createElement('div');x.className='entry';let tx=document.createElement('div');tx.innerHTML='<b>'+d+'</b><br><small></small>';tx.querySelector('small').textContent=t;let del=document.createElement('button');del.type='button';del.className='secondary';del.textContent='Supprimer';del.addEventListener('click',()=>{delete special[d];localStorage.setItem('sukobaatDates',JSON.stringify(special));renderEntries()});x.append(tx,del);box.append(x)})}
+ const iphone=$('#iphone'),old=$('#old'),ring=$('#ring'),hand=$('#handset'),cable=$('#cable'),usb=$('#usb'),cap=$('#caption');
+ const texts1=['Pose ton iPhone sur SUKOBAAT.','Ton iPhone vibre et affiche l’appel entrant.','DRIIIIING ! SUKOBAAT sonne.','Tu prends ton iPhone.','Tu téléphones normalement.'];
+ const texts2=['Pose ton iPhone sur SUKOBAAT et branche l’USB-C.','Ton iPhone reste posé et branché : il vibre et affiche l’appel entrant.','DRIIIIING ! SUKOBAAT sonne.','Tu décroches le combiné rose.','Tu téléphones avec le combiné rose.'];
+ function resetVisual(){iphone.classList.remove('shake');old.classList.remove('shake');ring.classList.remove('ringing');hand.classList.remove('lift');cable.style.opacity=option===2&&step>0?1:0;usb.style.opacity=option===2&&step>0?1:0}
+ function draw(){resetVisual();let a=option===1?texts1:texts2;cap.textContent=a[step];if(option===1){if(step===1)iphone.classList.add('shake');if(step===2){iphone.classList.add('shake');old.classList.add('shake');ring.classList.add('ringing')}if(step>=3)iphone.style.transform='translate(65px,-85px)'}else{if(step>=1){cable.style.opacity=1;usb.style.opacity=1}if(step===2){iphone.classList.add('shake');old.classList.add('shake');ring.classList.add('ringing')}if(step>=3)hand.classList.add('lift')}$('#next').textContent=step===a.length-1?'↺ Recommencer':'Étape suivante →'}
+ function reset(){step=0;iphone.style.transform='';$('#next').hidden=false;$('#restart').style.display='none';draw()}
+ const stepPics={1:['assets/afbf781b9488.jpg','assets/ce7f5e9750d8.jpg','assets/7c0d7841cb94.jpg','assets/55fe769e4a85.jpg','assets/9f864655a3e5.jpg'],2:['assets/c5bd6c4bae3b.jpg','assets/351f3637799c.jpg','assets/43605610f993.jpg','assets/6507863d8fbc.jpg','assets/bc64a364062a.jpg']};
+const oldDrawSteps=draw;
+draw=function(){
+ oldDrawSteps();
+ const pics=stepPics[option], img=$('#stepImg'), badge=$('#stepBadge');
+ img.src=pics[Math.min(step,pics.length-1)];
+ badge.textContent=(step+1)+' / '+pics.length;$('#imgPrev').disabled=step===0;$('#imgNext').disabled=step===pics.length-1;$('#stepDring').classList.toggle('on',step===2 && option===2);const last=step===pics.length-1;$('#next').hidden=last;$('#restart').style.display=last?'inline-block':'none';
+}
+$$('.demo-tabs button').forEach(b=>b.addEventListener('click',()=>{$$('.demo-tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');option=+b.dataset.option;reset()}));
+ $('#imgPrev').addEventListener('click',()=>{if(step>0){step--;draw()}});
+$('#imgNext').addEventListener('click',()=>{let a=option===1?texts1:texts2;if(step<a.length-1){step++;draw()}});
+$('#next').addEventListener('click',()=>{let a=option===1?texts1:texts2;if(step===a.length-1)reset();else{step++;draw()}});$('#restart').addEventListener('click',reset);reset();
+
+document.querySelector('[data-bottom-home]').addEventListener('click',()=>show('home'));document.querySelector('[data-generic-home]').addEventListener('click',()=>show('home'));
+const demoPhoto=document.querySelector('#demoPhoto'), photoRing=document.querySelector('#photoRing');
+function syncPhotoDemo(){const ip=$('#iphonePulse'),hp=$('#handsetPulse'),ps=$('#personScene'),sl=$('#sceneLabel');demoPhoto.classList.remove('demo-vibe','demo-ring');photoRing.classList.remove('on');ip.classList.remove('hotspot-vibe');hp.classList.remove('hotspot-ring');ps.classList.remove('on');demoPhoto.style.opacity='1';if((option===1&&step===1)||(option===2&&step===2))ip.classList.add('hotspot-vibe');if((option===1&&step===2)||(option===2&&step===2)){hp.classList.add('hotspot-ring');photoRing.classList.add('on')}if(option===1&&step===4){ps.classList.add('on');sl.textContent='Elle téléphone avec son iPhone, où elle veut.';ps.style.backgroundPosition='left bottom'}if(option===2&&step===4){ps.classList.add('on');sl.textContent='Assise à son bureau, elle téléphone avec le combiné rose.';ps.style.backgroundPosition='right bottom'}}
+const originalDraw=draw;
+draw=function(){originalDraw();syncPhotoDemo()}
+syncPhotoDemo();
+
+})();
+</script>
+</body></html>
+<style>
+/* Genèse — lecture plus élégante */
+#genese{padding-bottom:28px}
+#genese.story{max-width:620px}
+#genese.story h2{text-align:center;margin-top:34px}
+#genese.story h2+div{margin:14px auto 44px!important}
+#genese.story p{font-size:18px;line-height:1.78}
+#genese.story>p:first-of-type{font-size:25px;text-align:center;font-style:italic;line-height:1.5;margin:38px 0 48px}
+#genese.story strong{background:linear-gradient(transparent 68%,rgba(232,166,173,.30) 0)}
+.genese-home{display:block;width:max-content;margin:48px auto 10px;text-decoration:none;border:1px solid var(--ink);border-radius:999px;padding:13px 22px;color:var(--ink);font-family:Arial,sans-serif;font-size:14px;cursor:pointer}
+.genese-home:hover{background:var(--ink);color:var(--paper)}
+
+/* Mode d'emploi — le visuel fourni devient la scène animée */
+#mode .stage{height:auto;aspect-ratio:1.08/1;background:#eee5db;border-radius:26px;position:relative;overflow:hidden}
+.demo-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:transform .7s ease,filter .5s ease}
+.demo-vibe{animation:photoVibe .11s linear infinite}
+.demo-ring{animation:photoRing .42s ease-in-out infinite}
+@keyframes photoVibe{25%{transform:translateX(-3px) rotate(-.2deg)}75%{transform:translateX(3px) rotate(.2deg)}}
+@keyframes photoRing{0%,100%{transform:rotate(0)}25%{transform:rotate(-.45deg)}75%{transform:rotate(.45deg)}}
+.photo-ringtext{position:absolute;z-index:8;left:7%;top:7%;font:800 clamp(20px,5vw,34px) Arial,sans-serif;letter-spacing:.05em;opacity:0;text-shadow:0 2px 8px #fff}
+.photo-ringtext.on{animation:ringWord .45s ease infinite}
+@keyframes ringWord{50%{opacity:1;transform:scale(1.08) rotate(-4deg)}}
+.photo-hand{position:absolute;z-index:9;left:7%;top:10%;width:57%;height:26%;border-radius:45%;opacity:0;pointer-events:none}
+.photo-iphone{position:absolute;z-index:9;right:8%;top:31%;width:30%;height:36%;border-radius:18%;opacity:0;pointer-events:none}
+.photo-cable{position:absolute;z-index:9;right:0;bottom:10%;width:25%;height:25%;opacity:0;pointer-events:none}
+#mode .base,#mode .oldphone,#mode .phone,#mode .cable,#mode .usb,#mode .ring{display:none!important}
+@media(max-width:480px){#mode .stage{height:auto;aspect-ratio:1/1}.demo-photo{object-fit:cover}}
+</style>
+<style>
+#genese.story>p{border:0!important;background:none!important;padding:0!important}
+#genese.story strong{background:none!important;font-weight:400!important}
+#genese.story>p:first-of-type{font-style:normal}
+#genericGenese{display:none}
+#genericGenese p{font-size:18px;line-height:1.78;margin:0 0 1.25em}
+.demo-hotspot{position:absolute;z-index:10;pointer-events:none}
+#iphonePulse{right:7.5%;top:31%;width:31%;height:36%}
+#handsetPulse{left:8%;top:12%;width:58%;height:20%}
+.hotspot-vibe{animation:localVibe .11s linear infinite}
+.hotspot-ring{animation:localRing .18s linear infinite}
+@keyframes localVibe{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes localRing{25%{transform:translate(-3px,1px) rotate(-1deg)}75%{transform:translate(3px,-1px) rotate(1deg)}}
+.scene-person{display:none;position:absolute;inset:0;z-index:12;background:#eee5db center/cover no-repeat}
+.scene-person.on{display:block}.scene-label{position:absolute;left:5%;right:5%;bottom:5%;padding:10px 14px;background:#f7f0e8e8;border-radius:14px;text-align:center;font-size:15px}
+</style><style>#personScene{background-image:url(assets/05638ae577b4.png)}</style><style>
+.step-scene{position:absolute;inset:0;z-index:15;background:#efe5d9;display:flex;align-items:center;justify-content:center}
+.step-scene img{width:100%;height:100%;object-fit:cover;display:block}
+.step-badge{position:absolute;left:14px;top:14px;background:#171717;color:white;border-radius:999px;padding:7px 11px;font:700 13px Arial,sans-serif}
+#mode .caption{font-size:18px;line-height:1.45}
+</style><style>
+#mode .stage{aspect-ratio:1.55/1!important;height:auto!important;background:#f2ebe3!important}
+.step-scene{background:#f2ebe3!important}
+.step-scene img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
+.step-badge{display:none!important}
+.photo-ringtext,.scene-label{display:none!important}
+#restart{display:inline-block}
+#next[hidden]{display:none!important}
+</style><style>#restart{display:none}</style><style>
+#stepDring{display:none;position:absolute;z-index:30;left:6%;top:7%;font:900 clamp(22px,6vw,38px) Arial,sans-serif;letter-spacing:.06em;transform:rotate(-5deg);text-shadow:0 2px 7px #fff,0 0 2px #fff}
+#stepDring.on{display:block;animation:dringPop .55s ease-in-out infinite}
+@keyframes dringPop{50%{transform:rotate(4deg) scale(1.08)}}
+</style><style>
+.step-nav{position:absolute;z-index:40;top:50%;transform:translateY(-50%);width:42px;height:42px;border:0;border-radius:50%;background:#171717dd;color:#fff;font:28px/1 Arial,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px #0003}
+.step-nav.prev{left:12px}.step-nav.next{right:12px}
+.step-nav:disabled{opacity:.25;cursor:default}
+</style>
+<style>
+/* Uniformisation finale du carrousel */
+#mode .stage{
+  width:100%!important;
+  aspect-ratio: 3 / 1!important;
+  height:auto!important;
+  overflow:hidden!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#mode .step-scene{
+  width:100%!important;
+  height:100%!important;
+}
+#mode .step-scene img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  display:block!important;
+}
+</style>
+
+<style>
+#stepDring{
+  left:18%!important;
+  right:auto!important;
+  top:10%!important;
+  transform:rotate(-5deg)!important;
+}
+</style>
+
+<style>
+.menuLink{
+  display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;color:inherit;
+}
+#mode:target,#genese:target{
+  display:block!important;
+  position:fixed!important;inset:0!important;z-index:500!important;
+  overflow:auto!important;background:var(--paper,#f6f0e8)!important;
+}
+#gate:target{
+  display:flex!important;z-index:1000!important;
+}
+#home:target{display:block!important}
+</style>
