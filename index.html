@@ -366,3 +366,9 @@ syncPhotoDemo();
 #gate:target{display:none!important}
 #gate.open{display:flex!important}
 </style>
+<style>
+/* Navigation is JS-only: hashes must never force old views back on screen. */
+#mode:target,#genese:target,#home:target{display:none!important}
+#mode.view.active,#genese.view.active,#home.view.active{display:block!important}
+#genese .genese-home-top{display:inline-flex!important;align-items:center!important;width:auto!important;margin:2px 0 18px!important;padding:9px 15px!important;border:1px solid var(--line)!important;border-radius:999px!important;background:rgba(255,255,255,.45)!important;color:var(--ink)!important;text-decoration:none!important;font:600 13px Arial,sans-serif!important}
+</style>
