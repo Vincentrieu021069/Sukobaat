@@ -157,9 +157,9 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
  <h2>⚙️ Dates et messages</h2>
  <p><small>Les dates ajoutées changent uniquement l’introduction de la Genèse. Le reste du texte générique reste identique. Enregistrement local sur cet appareil/navigateur.</small></p>
  <form id="entryForm">
-  <div class="field"><label>Date de naissance</label><input id="entryDate" placeholder="JJ/MM/AAAA" inputmode="numeric"></div>
+  <div class="field"><label>Nom de la date</label><input id="entryName" placeholder="Ex. Papa, Marie…"></div><div class="field"><label>Date de naissance</label><input id="entryDate" placeholder="JJ/MM/AAAA" inputmode="numeric"></div>
   <div class="field"><label>Introduction personnalisée de la Genèse</label><textarea id="entryText" placeholder="Texte d’introduction…"></textarea></div>
-  <div class="row"><button class="primary">Ajouter</button><button type="button" class="secondary" id="adminHome">Retour au menu principal</button></div>
+  <input type="hidden" id="entryOriginal"><div class="row"><button class="primary" id="entrySave">Ajouter</button><button type="button" class="secondary" id="entryCancel" style="display:none">Annuler la modification</button><button type="button" class="secondary" id="adminHome">Retour au menu principal</button></div>
  </form><div id="entries"></div>
 </div></div>
 
@@ -190,7 +190,7 @@ $('#gateForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#birthD
 if(genesisMode==='generic'){
  let intro;
  if(d==='01/04/1958') intro="Si tu lis ces lignes, c’est qu’il y a dans SUKOBAAT un petit bout d’histoire qui te concerne aussi.\n\nCe métier qu’elle aime aujourd’hui, elle en a eu envie en te regardant le faire. Les rencontres, les échanges, le goût d’aller vers les gens : bien avant SUKOBAAT, c’est toi qui lui as montré tout ça sans forcément avoir besoin de l’expliquer.\n\nÀ ton époque, le téléphone était déjà indispensable, mais il restait à sa place. On appelait depuis le bureau, on prenait rendez-vous, puis on raccrochait pour aller voir les gens. Le téléphone aidait à créer la relation ; il ne la remplaçait pas.\n\nC’est une partie de cette idée que j’ai eu envie de remettre dans cet objet pour elle : garder tout ce que son iPhone permet aujourd’hui, tout en retrouvant un téléphone posé sur le bureau, une sonnerie qu’on entend et un combiné qu’on décroche.\n\nAlors, quelque part, même si tu n’as évidemment rien demandé, tu as apporté un petit morceau de SUKOBAAT avant même que l’idée existe.";
- else if(special[d] && special[d]!=='ACCES') intro=special[d];
+ else if(special[d] && special[d]!=='ACCES') intro=entryObj(d,special[d]).text;
  else intro='Voici comment est né SUKOBAAT : une envie de remettre un peu de geste, de présence et de plaisir dans une chose devenue presque entièrement numérique.';
  $('#genericIntro').textContent=intro;
 }
@@ -198,8 +198,12 @@ closeAll();m.textContent='';$('#birthDay').value='';$('#birthMonth').value='';$(
 $('#settings').addEventListener('click',()=>{$('#adminPass').value='';$('#adminMsg').textContent='';closeAll();open('adminGate');$('#adminPass').focus()});$('#adminHome').addEventListener('click',()=>{$('#adminPass').value='';$('#adminMsg').textContent='';closeAll();show('home');history.replaceState(null,'',location.pathname+location.search)});
 function adminCode(){let n=new Date();return String(n.getDate()+(n.getMonth()+1)+n.getHours())}
 $('#adminForm').addEventListener('submit',e=>{e.preventDefault();if($('#adminPass').value===adminCode()){closeAll();renderEntries();open('admin')}else $('#adminMsg').textContent='Mot de passe incorrect.'});
-$('#entryForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#entryDate').value.trim(),t=$('#entryText').value.trim();if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)||!t)return;special[d]=t;localStorage.setItem('sukobaatDates',JSON.stringify(special));$('#entryDate').value='';$('#entryText').value='';renderEntries()});
-function renderEntries(){let box=$('#entries');box.innerHTML='';Object.entries(special).forEach(([d,t])=>{let x=document.createElement('div');x.className='entry';let tx=document.createElement('div');tx.innerHTML='<b>'+d+'</b><br><small></small>';tx.querySelector('small').textContent=t;let del=document.createElement('button');del.type='button';del.className='secondary';del.textContent='Supprimer';del.addEventListener('click',()=>{delete special[d];localStorage.setItem('sukobaatDates',JSON.stringify(special));renderEntries()});x.append(tx,del);box.append(x)})}
+function entryObj(d,v){return typeof v==='string'?{name:d,text:v}:{name:(v.name||d),text:(v.text||'')}}
+function saveSpecial(){localStorage.setItem('sukobaatDates',JSON.stringify(special))}
+function clearEntry(){['entryName','entryDate','entryText','entryOriginal'].forEach(id=>$('#'+id).value='');$('#entrySave').textContent='Ajouter';$('#entryCancel').style.display='none'}
+$('#entryForm').addEventListener('submit',e=>{e.preventDefault();let n=$('#entryName').value.trim(),d=$('#entryDate').value.trim(),t=$('#entryText').value.trim(),o=$('#entryOriginal').value;if(!n||!/^\d{2}\/\d{2}\/\d{4}$/.test(d)||!t)return;if(o&&o!==d)delete special[o];special[d]={name:n,text:t};saveSpecial();clearEntry();renderEntries()});
+$('#entryCancel').addEventListener('click',()=>{clearEntry()});
+function renderEntries(){let box=$('#entries');box.innerHTML='';Object.entries(special).forEach(([d,v])=>{let o=entryObj(d,v),x=document.createElement('div');x.className='entry';let head=document.createElement('button');head.type='button';head.className='secondary';head.style.cssText='width:100%;text-align:left;font-weight:700';head.textContent=o.name+' — '+d;let detail=document.createElement('div');detail.style.display='none';let p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.textContent=o.text;let edit=document.createElement('button');edit.type='button';edit.className='secondary';edit.textContent='Modifier';edit.addEventListener('click',()=>{$('#entryName').value=o.name;$('#entryDate').value=d;$('#entryText').value=o.text;$('#entryOriginal').value=d;$('#entrySave').textContent='Enregistrer';$('#entryCancel').style.display='inline-block';$('#entryName').focus()});let del=document.createElement('button');del.type='button';del.className='secondary';del.textContent='Supprimer';del.addEventListener('click',()=>{delete special[d];saveSpecial();renderEntries()});head.addEventListener('click',()=>{detail.style.display=detail.style.display==='none'?'block':'none'});detail.append(p,edit,del);x.append(head,detail);box.append(x)})}
  const iphone=$('#iphone'),old=$('#old'),ring=$('#ring'),hand=$('#handset'),cable=$('#cable'),usb=$('#usb'),cap=$('#caption');
  const texts1=['Pose ton iPhone sur SUKOBAAT.','Ton iPhone vibre et affiche l’appel entrant.','DRIIIIING ! SUKOBAAT sonne.','Tu prends ton iPhone.','Tu téléphones normalement.'];
  const texts2=['Pose ton iPhone sur SUKOBAAT et branche l’USB-C.','Ton iPhone reste posé et branché : il vibre et affiche l’appel entrant.','DRIIIIING ! SUKOBAAT sonne.','Tu décroches le combiné rose.','Tu téléphones avec le combiné rose.'];
