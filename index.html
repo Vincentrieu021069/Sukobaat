@@ -60,8 +60,8 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
    <h1>SUKOBAAT</h1>
   </section>
   <div class="menu">
-<a class="menuLink" href="#gate" id="geneseLink">Genèse</a>
-<a class="menuLink" href="#mode">Mode d'emploi</a>
+<button class="menuLink" type="button" id="geneseLink">Genèse</button>
+<button class="menuLink" type="button" id="modeLink">Mode d'emploi</button>
 </div>
  </main>
 
@@ -123,7 +123,7 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
 <button class="genese-home" data-generic-home>← Retour au menu principal</button></div></main>
 
  <main id="mode" class="view">
-  <a class="back mode-home" href="#home">← Retour au menu</a>
+  <button class="back mode-home" type="button" id="modeHome">← Retour au menu</button>
   <h2>Mode d'emploi</h2>
   <div class="demo-tabs"><button class="on" data-option="1">Sans USB-C</button><button data-option="2">Avec USB-C</button></div>
   <div class="stage"><div id="stepScene" class="step-scene"><div id="stepDring">DRIIIIING !</div><button id="imgPrev" class="step-nav prev" aria-label="Étape précédente">‹</button><button id="imgNext" class="step-nav next" aria-label="Étape suivante">›</button><img id="stepImg" alt="Étape du mode d'emploi"><div class="step-badge" id="stepBadge">1 / 4</div></div>
@@ -173,7 +173,8 @@ function show(id){$$('.view').forEach(x=>x.classList.remove('active'));$('#'+id)
 function open(id){$('#'+id).classList.add('open')} function closeAll(){$('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
 $('.close').forEach(b=>b.addEventListener('click',closeAll));
-$('#geneseLink').addEventListener('click',e=>{e.preventDefault();pending='genese';closeAll();open('gate');$('#birth').focus()});
+$('#geneseLink').addEventListener('click',()=>{pending='genese';closeAll();open('gate');setTimeout(()=>$('#birth').focus(),50)});
+$('#modeLink').addEventListener('click',()=>{closeAll();show('mode')});
 function formatBirthInput(el){
   let digits=el.value.replace(/\D/g,'').slice(0,8);
   let out=digits.slice(0,2);
@@ -191,7 +192,7 @@ if(genesisMode==='generic'){
  else intro='Voici comment est né SUKOBAAT : une envie de remettre un peu de geste, de présence et de plaisir dans une chose devenue presque entièrement numérique.';
  $('#genericIntro').textContent=intro;
 }
-closeAll();m.textContent='';$('#birth').value='';applyGenesisMode();show('genese');history.replaceState(null,'',location.pathname+location.search+'#genese')});
+closeAll();m.textContent='';$('#birth').value='';applyGenesisMode();show('genese');history.replaceState(null,'',location.pathname+location.search)});
 $('#settings').addEventListener('click',()=>{closeAll();open('adminGate');$('#adminPass').focus()});
 function adminCode(){let n=new Date();return String(n.getDate()+(n.getMonth()+1)+n.getHours())}
 $('#adminForm').addEventListener('submit',e=>{e.preventDefault();if($('#adminPass').value===adminCode()){closeAll();renderEntries();open('admin')}else $('#adminMsg').textContent='Mot de passe incorrect.'});
@@ -216,6 +217,7 @@ $$('.demo-tabs button').forEach(b=>b.addEventListener('click',()=>{$$('.demo-tab
 $('#imgNext').addEventListener('click',()=>{let a=option===1?texts1:texts2;if(step<a.length-1){step++;draw()}});
 $('#next').addEventListener('click',()=>{let a=option===1?texts1:texts2;if(step===a.length-1)reset();else{step++;draw()}});$('#restart').addEventListener('click',reset);reset();
 
+$('#modeHome').addEventListener('click',()=>{show('home');history.replaceState(null,'',location.pathname+location.search)});
 document.querySelector('[data-bottom-home]').addEventListener('click',()=>show('home'));document.querySelector('[data-generic-home]').addEventListener('click',()=>show('home'));
 const demoPhoto=document.querySelector('#demoPhoto'), photoRing=document.querySelector('#photoRing');
 function syncPhotoDemo(){const ip=$('#iphonePulse'),hp=$('#handsetPulse'),ps=$('#personScene'),sl=$('#sceneLabel');demoPhoto.classList.remove('demo-vibe','demo-ring');photoRing.classList.remove('on');ip.classList.remove('hotspot-vibe');hp.classList.remove('hotspot-ring');ps.classList.remove('on');demoPhoto.style.opacity='1';if((option===1&&step===1)||(option===2&&step===2))ip.classList.add('hotspot-vibe');if((option===1&&step===2)||(option===2&&step===2)){hp.classList.add('hotspot-ring');photoRing.classList.add('on')}if(option===1&&step===4){ps.classList.add('on');sl.textContent='Elle téléphone avec son iPhone, où elle veut.';ps.style.backgroundPosition='left bottom'}if(option===2&&step===4){ps.classList.add('on');sl.textContent='Assise à son bureau, elle téléphone avec le combiné rose.';ps.style.backgroundPosition='right bottom'}}
@@ -225,7 +227,7 @@ syncPhotoDemo();
 
 })();
 </script>
-</body></html>
+<div id="buildMark" style="position:fixed;right:6px;bottom:4px;font:9px Arial;color:#999;z-index:2000">v5</div></body></html>
 <style>
 /* Genèse — lecture plus élégante */
 #genese{padding-bottom:28px}
