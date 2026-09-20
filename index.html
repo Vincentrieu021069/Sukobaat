@@ -60,7 +60,7 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
    <h1>SUKOBAAT</h1>
   </section>
   <div class="menu">
-<a class="menuLink" href="#gate">Genèse</a>
+<a class="menuLink" href="#gate" id="geneseLink">Genèse</a>
 <a class="menuLink" href="#mode">Mode d'emploi</a>
 </div>
  </main>
@@ -170,9 +170,10 @@ const defaults={'18/06/1973':'ACCES','01/04/1958':"Si tu lis ces lignes, c’est
 let special={...defaults};
 try{special={...special,...JSON.parse(localStorage.getItem('sukobaatDates')||'{}')}}catch(e){}
 function show(id){$$('.view').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0)}function applyGenesisMode(){const g=$('#genericGenese');[...$('#genese').children].forEach(el=>{if(el===g||el.classList.contains('back'))return;el.style.display=genesisMode==='personal'?'':'none'});g.style.display=genesisMode==='generic'?'block':'none'}
-function open(id){$('#'+id).classList.add('open')} function closeAll(){$$('.modal').forEach(x=>x.classList.remove('open'))}
+function open(id){$('#'+id).classList.add('open')} function closeAll(){$('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
-$$('.close').forEach(b=>b.addEventListener('click',closeAll));
+$('.close').forEach(b=>b.addEventListener('click',closeAll));
+$('#geneseLink').addEventListener('click',e=>{e.preventDefault();pending='genese';closeAll();open('gate');$('#birth').focus()});
 function formatBirthInput(el){
   let digits=el.value.replace(/\D/g,'').slice(0,8);
   let out=digits.slice(0,2);
@@ -190,7 +191,7 @@ if(genesisMode==='generic'){
  else intro='Voici comment est né SUKOBAAT : une envie de remettre un peu de geste, de présence et de plaisir dans une chose devenue presque entièrement numérique.';
  $('#genericIntro').textContent=intro;
 }
-closeAll();m.textContent='';$('#birth').value='';applyGenesisMode();show(pending);if(pending==='genese')location.hash='genese'});
+closeAll();m.textContent='';$('#birth').value='';applyGenesisMode();show('genese');history.replaceState(null,'',location.pathname+location.search+'#genese')});
 $('#settings').addEventListener('click',()=>{closeAll();open('adminGate');$('#adminPass').focus()});
 function adminCode(){let n=new Date();return String(n.getDate()+(n.getMonth()+1)+n.getHours())}
 $('#adminForm').addEventListener('submit',e=>{e.preventDefault();if($('#adminPass').value===adminCode()){closeAll();renderEntries();open('admin')}else $('#adminMsg').textContent='Mot de passe incorrect.'});
