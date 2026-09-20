@@ -170,9 +170,9 @@ const defaults={'18/06/1973':'ACCES','01/04/1958':"Si tu lis ces lignes, c’est
 let special={...defaults};
 try{special={...special,...JSON.parse(localStorage.getItem('sukobaatDates')||'{}')}}catch(e){}
 function show(id){$$('.view').forEach(x=>x.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0)}function applyGenesisMode(){const g=$('#genericGenese');[...$('#genese').children].forEach(el=>{if(el===g||el.classList.contains('back')||el.classList.contains('genese-home'))return;el.style.display=genesisMode==='personal'?'':'none'});g.style.display=genesisMode==='generic'?'block':'none'}
-function open(id){$('#'+id).classList.add('open')} function closeAll(){$('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
-$('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
-$('.close').forEach(b=>b.addEventListener('click',closeAll));
+function open(id){$('#'+id).classList.add('open')} function closeAll(){document.querySelectorAll('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
+document.querySelectorAll('.close').forEach(b=>b.addEventListener('click',closeAll));
 $('#geneseLink').addEventListener('click',()=>{pending='genese';closeAll();open('gate')});
 $('#modeLink').addEventListener('click',()=>{closeAll();show('mode')});
 function formatBirthInput(el){
@@ -214,7 +214,7 @@ draw=function(){
  img.src=pics[Math.min(step,pics.length-1)];
  badge.textContent=(step+1)+' / '+pics.length;$('#imgPrev').disabled=step===0;$('#imgNext').disabled=step===pics.length-1;$('#stepDring').classList.toggle('on',step===2 && option===2);const last=step===pics.length-1;$('#next').hidden=last;$('#restart').style.display=last?'inline-block':'none';
 }
-$('.demo-tabs button').forEach(b=>b.addEventListener('click',()=>{$('.demo-tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');option=+b.dataset.option;reset()}));
+document.querySelectorAll('.demo-tabs button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.demo-tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');option=+b.dataset.option;reset()}));
  $('#imgPrev').addEventListener('click',()=>{if(step>0){step--;draw()}});
 $('#imgNext').addEventListener('click',()=>{let a=option===1?texts1:texts2;if(step<a.length-1){step++;draw()}});
 $('#next').addEventListener('click',()=>{let a=option===1?texts1:texts2;if(step===a.length-1)reset();else{step++;draw()}});$('#restart').addEventListener('click',reset);reset();
