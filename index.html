@@ -159,7 +159,7 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
  <form id="entryForm">
   <div class="field"><label>Date de naissance</label><input id="entryDate" placeholder="JJ/MM/AAAA" inputmode="numeric"></div>
   <div class="field"><label>Introduction personnalisée de la Genèse</label><textarea id="entryText" placeholder="Texte d’introduction…"></textarea></div>
-  <div class="row"><button class="primary">Ajouter</button><button type="button" class="secondary close">Fermer</button></div>
+  <div class="row"><button class="primary">Ajouter</button><button type="button" class="secondary" id="adminHome">Retour au menu principal</button></div>
  </form><div id="entries"></div>
 </div></div>
 
@@ -195,7 +195,7 @@ if(genesisMode==='generic'){
  $('#genericIntro').textContent=intro;
 }
 closeAll();m.textContent='';$('#birthDay').value='';$('#birthMonth').value='';$('#birthYear').value='';applyGenesisMode();show('genese');history.replaceState(null,'',location.pathname+location.search)});
-$('#settings').addEventListener('click',()=>{closeAll();open('adminGate');$('#adminPass').focus()});
+$('#settings').addEventListener('click',()=>{closeAll();open('adminGate');$('#adminPass').focus()});$('#adminHome').addEventListener('click',()=>{closeAll();show('home');history.replaceState(null,'',location.pathname+location.search)});
 function adminCode(){let n=new Date();return String(n.getDate()+(n.getMonth()+1)+n.getHours())}
 $('#adminForm').addEventListener('submit',e=>{e.preventDefault();if($('#adminPass').value===adminCode()){closeAll();renderEntries();open('admin')}else $('#adminMsg').textContent='Mot de passe incorrect.'});
 $('#entryForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#entryDate').value.trim(),t=$('#entryText').value.trim();if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)||!t)return;special[d]=t;localStorage.setItem('sukobaatDates',JSON.stringify(special));$('#entryDate').value='';$('#entryText').value='';renderEntries()});
