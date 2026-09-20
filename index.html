@@ -143,7 +143,7 @@ button,input,textarea{font:inherit}.app{max-width:760px;margin:auto;min-height:1
 <div class="modal" id="gate"><div class="card">
  <h2>Pour savoir si ce message est bien pour toi…</h2>
  <p>Quelle est ta date de naissance ?</p>
- <form id="gateForm"><div class="field"><input id="birth" inputmode="numeric" maxlength="10" placeholder="JJ/MM/AAAA" autocomplete="off"></div>
+ <form id="gateForm"><div class="field birth-pickers"><select id="birthDay" aria-label="Jour"><option value="">Jour</option></select><select id="birthMonth" aria-label="Mois"><option value="">Mois</option></select><select id="birthYear" aria-label="Année"><option value="">Année</option></select></div>
  <div class="row"><button class="primary">Entrer</button><a class="secondary close" href="#home">Annuler</a></div><p class="msg" id="gateMsg"></p></form>
 </div></div>
 
@@ -173,7 +173,7 @@ function show(id){$$('.view').forEach(x=>x.classList.remove('active'));$('#'+id)
 function open(id){$('#'+id).classList.add('open')} function closeAll(){$$$('.modal').forEach(x=>x.classList.remove('open'));if(location.hash==='#gate'||location.hash==='#adminGate'||location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)}
 $$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{if(b.closest('.menu'))return;let dest=b.dataset.go;if(dest==='home'||dest==='mode')return show(dest);pending=dest;open('gate');$('#birth').focus()}));
 $$$('.close').forEach(b=>b.addEventListener('click',closeAll));
-$('#geneseLink').addEventListener('click',()=>{pending='genese';closeAll();open('gate');setTimeout(()=>$('#birth').focus(),50)});
+$('#geneseLink').addEventListener('click',()=>{pending='genese';closeAll();open('gate')});
 $('#modeLink').addEventListener('click',()=>{closeAll();show('mode')});
 function formatBirthInput(el){
   let digits=el.value.replace(/\D/g,'').slice(0,8);
@@ -182,9 +182,11 @@ function formatBirthInput(el){
   if(digits.length>4) out+='/'+digits.slice(4,8);
   el.value=out;
 }
-$('#birth').addEventListener('input',()=>formatBirthInput($('#birth')));
+for(let d=1;d<=31;d++) $('#birthDay').insertAdjacentHTML('beforeend','<option value="'+String(d).padStart(2,'0')+'">'+d+'</option>');
+['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'].forEach((m,i)=>$('#birthMonth').insertAdjacentHTML('beforeend','<option value="'+String(i+1).padStart(2,'0')+'">'+m+'</option>'));
+for(let y=new Date().getFullYear();y>=1900;y--) $('#birthYear').insertAdjacentHTML('beforeend','<option value="'+y+'">'+y+'</option>');
 $('#entryDate').addEventListener('input',()=>formatBirthInput($('#entryDate')));
-$('#gateForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#birth').value.trim(),m=$('#gateMsg');if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)){m.textContent='Entre la date au format JJ/MM/AAAA.';return}genesisMode=(d==='18/06/1973')?'personal':'generic';
+$('#gateForm').addEventListener('submit',e=>{e.preventDefault();let d=$('#birthDay').value+'/'+$('#birthMonth').value+'/'+$('#birthYear').value,m=$('#gateMsg');if(!/^\d{2}\/\d{2}\/\d{4}$/.test(d)){m.textContent='Entre la date au format JJ/MM/AAAA.';return}genesisMode=(d==='18/06/1973')?'personal':'generic';
 if(genesisMode==='generic'){
  let intro;
  if(d==='01/04/1958') intro="Si tu lis ces lignes, c’est qu’il y a dans SUKOBAAT un petit bout d’histoire qui te concerne aussi.\n\nCe métier qu’elle aime aujourd’hui, elle en a eu envie en te regardant le faire. Les rencontres, les échanges, le goût d’aller vers les gens : bien avant SUKOBAAT, c’est toi qui lui as montré tout ça sans forcément avoir besoin de l’expliquer.\n\nÀ ton époque, le téléphone était déjà indispensable, mais il restait à sa place. On appelait depuis le bureau, on prenait rendez-vous, puis on raccrochait pour aller voir les gens. Le téléphone aidait à créer la relation ; il ne la remplaçait pas.\n\nC’est une partie de cette idée que j’ai eu envie de remettre dans cet objet pour elle : garder tout ce que son iPhone permet aujourd’hui, tout en retrouvant un téléphone posé sur le bureau, une sonnerie qu’on entend et un combiné qu’on décroche.\n\nAlors, quelque part, même si tu n’as évidemment rien demandé, tu as apporté un petit morceau de SUKOBAAT avant même que l’idée existe.";
@@ -192,7 +194,7 @@ if(genesisMode==='generic'){
  else intro='Voici comment est né SUKOBAAT : une envie de remettre un peu de geste, de présence et de plaisir dans une chose devenue presque entièrement numérique.';
  $('#genericIntro').textContent=intro;
 }
-closeAll();m.textContent='';$('#birth').value='';applyGenesisMode();show('genese');history.replaceState(null,'',location.pathname+location.search)});
+closeAll();m.textContent='';$('#birthDay').value='';$('#birthMonth').value='';$('#birthYear').value='';applyGenesisMode();show('genese');history.replaceState(null,'',location.pathname+location.search)});
 $('#settings').addEventListener('click',()=>{closeAll();open('adminGate');$('#adminPass').focus()});
 function adminCode(){let n=new Date();return String(n.getDate()+(n.getMonth()+1)+n.getHours())}
 $('#adminForm').addEventListener('submit',e=>{e.preventDefault();if($('#adminPass').value===adminCode()){closeAll();renderEntries();open('admin')}else $('#adminMsg').textContent='Mot de passe incorrect.'});
@@ -371,4 +373,7 @@ syncPhotoDemo();
 #mode:target,#genese:target,#home:target{display:none!important}
 #mode.view.active,#genese.view.active,#home.view.active{display:block!important}
 #genese .genese-home-top{display:inline-flex!important;align-items:center!important;width:auto!important;margin:2px 0 18px!important;padding:9px 15px!important;border:1px solid var(--line)!important;border-radius:999px!important;background:rgba(255,255,255,.45)!important;color:var(--ink)!important;text-decoration:none!important;font:600 13px Arial,sans-serif!important}
+</style><style>
+.birth-pickers{display:grid!important;grid-template-columns:.8fr 1.25fr 1fr!important;gap:8px!important}
+.birth-pickers select{width:100%;min-width:0;padding:13px 8px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font:16px Arial,sans-serif}
 </style>
