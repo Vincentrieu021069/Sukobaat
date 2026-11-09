@@ -52,11 +52,14 @@ function boostMedia(el){
     amplifiedElements.set(el,gain);
   }catch(e){console.warn('Amplification indisponible',e)}
 }
-function soundInit(){try{
+function prepareAudio(){try{
   audio??=new(window.AudioContext||window.webkitAudioContext)();
-  audio.resume();audioEnabled=true;
   if(typeof dialSamples!=='undefined')Object.values(dialSamples).forEach(boostMedia);
   if(typeof phoneRingtone!=='undefined')boostMedia(phoneRingtone);
+}catch(e){console.warn('Préparation audio indisponible',e)}}
+function soundInit(){try{
+  prepareAudio();
+  audio.resume();audioEnabled=true;
 }catch(e){status.textContent='Audio indisponible sur ce navigateur.'}}
 
 function tone(freq,duration,vol=.04,type='sine',delay=0){if(!audioEnabled)return;const t=audio.currentTime+delay,o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,vol),t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(g).connect(audio.destination);o.start(t);o.stop(t+duration+.02)}
@@ -109,6 +112,7 @@ function selectDigit(n){if(busy||seq.length===4||!document.getElementById('stage
 // Each digit is a single uninterrupted recording (0.85 s outward + 1.5 s return).
 const dialSamples={};
 for(let i=0;i<=9;i++){const a=new Audio(`cadran_${i}_complet.mp3`);a.preload='auto';a.volume=1;dialSamples[i]=a;}
+prepareAudio();
 function playDial(n){const a=dialSamples[n];a.pause();a.currentTime=0;a.play().catch(()=>{});}
 function dial(n){if(busy||seq.length===4)return;busy=true;soundInit();playDial(n);const [x,y]=coords[n];const a=Math.atan2(y-603,x-628)*180/Math.PI;const travel=((45-a)%360+360)%360;ring.style.transition='transform 850ms ease-in-out';ring.style.transform=`rotate(${travel}deg)`;setTimeout(()=>{ring.style.transition='transform 1500ms cubic-bezier(.12,.58,.18,1)';ring.style.transform='rotate(0deg)';setTimeout(()=>{seq.push(n);renderCodeDigits();busy=false;if(seq.length<4)clearSelection();else{document.getElementById('stageViewport').classList.remove('zoomed');document.getElementById('dialInstruction').innerHTML='Maintenez votre doigt 5 secondes<span class="instruction-line">au centre du cadran.</span>';document.getElementById('dialInstruction').classList.add('fingerprint-step');document.getElementById('dialClue').hidden=true;document.getElementById('codeDigits').hidden=true;selectionPanel.style.display='none';center.classList.add(seq.join('')==='2444'?'gold':'gray');if(seq.join('')==='2444'){successSound();setTimeout(()=>{finger.style.display='block'},650)}else finger.style.display='block';status.textContent=''}},1530)},870)}
 Object.entries(coords).forEach(([n,[x,y]])=>{const hit=document.createElement('button');hit.type='button';hit.className='hot';hit.style.left=(x/1254*100)+'%';hit.style.top=(y/1254*100)+'%';hit.setAttribute('aria-label','Composer '+n);stage.append(hit);hit.addEventListener('click',()=>selectDigit(Number(n)))});
