@@ -90,7 +90,7 @@ function replayPhone(){
 }
 replayHero.addEventListener('click',replayPhone);
 replayHero.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();replayPhone()}});
-function renderCodeDigits(){document.querySelectorAll('#codeDigits .code-digit').forEach((slot,i)=>{slot.textContent=seq[i]===undefined?'':String(seq[i]);slot.classList.toggle('filled',i<seq.length)})}
+function renderCodeDigits(){document.querySelectorAll('#codeDigits span.code-digit').forEach((slot,i)=>{slot.textContent=seq[i]===undefined?'':String(seq[i]);slot.classList.toggle('filled',i<seq.length)})}
 document.getElementById('undoDigit').addEventListener('click',()=>{
   if(busy||complete)return;
   clearSelection();
